@@ -1,0 +1,11 @@
+urllib3
+pip==18.1
+pyOpenSSL
+xmltodict
+dicttoxml
+xlrd
+pdf417gen
+cchardet
+signxml
+pysftp
+num2words

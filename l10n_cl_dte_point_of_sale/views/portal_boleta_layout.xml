@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="boleta_report_body_layout" name="Reporte Boleta Electrónica">
+		<div class="page">
+			<t t-call="l10n_cl_dte_point_of_sale.report_boleta_header_layout" />
+			<t t-call="l10n_cl_dte_point_of_sale.report_boleta_partner_layout" />
+			<t t-call="l10n_cl_dte_point_of_sale.report_boleta_detail_layout" />
+			<t t-call="l10n_cl_dte_point_of_sale.report_boleta_subtotal_layout" />
+			<t t-call="l10n_cl_dte_point_of_sale.report_boleta_payment_layout" />
+			<t t-call="l10n_cl_dte_point_of_sale.report_boleta_sii_barcode_layout" />
+		</div>
+	</template>
+
+	<template id="boleta_report_layout" name="Consulta Boleta Electrónica"
+		inherit_id="l10n_cl_fe.boleta_report_layout">
+		<xpath
+			expr="//t[@t-call='l10n_cl_fe.report_invoice_document_with_payments']/.." position="after">
+			<t t-if="o._name == 'pos.order'">
+				<t t-call="l10n_cl_dte_point_of_sale.boleta_report_body_layout" />
+			</t>
+		</xpath>
+		<xpath
+			expr="//t[@t-set='boleta_style']" position="after">
+			<t t-if="docs and docs[0]._name == 'pos.order'">
+				<t t-set="boleta_style" t-value="'margin: auto;width: 320px;background-color: white;padding: 20px;font-size: 10px;'" />
+			</t>
+		</xpath>
+	</template>
+
+</odoo>
