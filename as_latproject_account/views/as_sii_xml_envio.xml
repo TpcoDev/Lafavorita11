@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="as_view_sii_cola_envio_form" model="ir.ui.view">
+    <field name="name">as.sii.cola_envio.form</field>
+    <field name="model">sii.cola_envio</field>
+    <field name="inherit_id" ref="l10n_cl_fe.view_sii_cola_envio_form" />
+    <field name="arch" type="xml">
+
+      <xpath expr="//field[@name='active']" position="after">
+        <field name="documentos" readonly="1"
+          context="{'form_view_ref': 'as_latproject_lafavorita.as_view_invoice_form_log_cola'}" />
+      </xpath>
+
+    </field>
+  </record>
+
+
+  <record model="ir.actions.act_window" id="sii_xml_envio">
+    <field name="name">SII XML envío</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">sii.xml.envio</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem name="SII XML envio" action="sii_xml_envio" id="menu_action_sii_xml_envio"
+    parent="l10n_cl_fe.menu_sii_config" />
+
+  <record id="as_view_invoice_form_log_cola" model="ir.ui.view">
+    <field name="model">account.invoice</field>
+    <field name="name">as.account.invoice.sii.form.log.cola</field>
+    <field name="arch" type="xml">
+      <form string="Invoice" class="o_invoice_form">
+        <header>          
+          <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,open,paid" />
+        </header>
+        <sheet string="Invoice">
+          <field name="document_number" />
+
+          <notebook>
+            <page string="Electronic Invoice" name="electronic_invoice">
+              <header>
+                <button string="Download XML" type="object" name="get_xml_file"
+                  attrs="{'invisible':['|',('state', 'in', ['draft']), ('sii_xml_request','=',False)]}" />
+                <button string="Download XML Exchange" type="object" name="get_xml_exchange_file"
+                  attrs="{'invisible':['|',('state', 'in', ['draft']), ('sii_xml_request','=',False)]}" />
+                <button string="Envío Manual XML Intercambio" type="object" name="manual_send_exchange"
+                  attrs="{'invisible':['|',('state', 'in', ['draft']), ('sii_xml_request','=',False)]}" />
+                <button string="Send XML" type="object" class="oe_highlight" name="do_dte_send_invoice"
+                  attrs="{'invisible': ['|', ('state', 'in', ['draft']),('sii_result', 'not in', ['','NoEnviado','Rechazado'])]}" />
+                <button string="Ask for DTE" type="object" class="oe_highlight" name="ask_for_dte_status"
+                  attrs="{'invisible':['|', ('state', 'in', ['draft']),('sii_result','in',['','NoEnviado'])]}" />
+                <field name='sii_result' widget="statusbar" />
+              </header>
+              <group>
+                <field name='sii_xml_request' attrs="{'invisible':[('sii_result', '=', '')]}" readonly="1"
+                  options="{'no_create': True}" />
+                <field name='sii_batch_number' readonly="1" />
+                <field name='sii_barcode_img' widget="image" attrs="{'invisible':[('sii_result', '=', '')]}"
+                  readonly="1" />
+                <field name='sii_message' attrs="{'invisible':[('sii_result', 'in', ['','NoEnviado'])]}" readonly="1" />
+                <field name='sii_xml_dte' attrs="{'invisible':[('sii_result', '=', '')]}" readonly="1" />
+              </group>
+            </page>
+
+          </notebook>
+        </sheet>
+      </form>
+
+    </field>
+  </record>
+
+</odoo>

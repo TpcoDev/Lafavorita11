@@ -9,3 +9,5 @@ cchardet
 signxml
 pysftp
 num2words
+xlsxwriter
+phonenumbers
