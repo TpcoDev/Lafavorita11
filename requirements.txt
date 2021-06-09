@@ -1,5 +1,5 @@
 urllib3
-pip==18.1
+pip==19.2
 pyOpenSSL
 xmltodict
 dicttoxml
